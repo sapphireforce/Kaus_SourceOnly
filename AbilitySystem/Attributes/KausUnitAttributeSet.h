@@ -51,10 +51,10 @@ protected:
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
 
 private:
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Lyra|Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Kaus|UnitAttribute", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Lyra|Health", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Kaus|UnitAttribute", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
 
 	// Store the health before any changes 

@@ -54,10 +54,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Kaus|CharacterMovement")
 	const FKausCharacterGroundInfo& GetGroundInfo();
 
+	void SetReplicatedAcceleration(const FVector& InAcceleration);
+
 protected:
 	virtual void InitializeComponent() override;
 
 protected:
 	// Cached ground info for the character.  Do not access this directly!  It's only updated when accessed via GetGroundInfo().
 	FKausCharacterGroundInfo CachedGroundInfo;
+
+	UPROPERTY(Transient)
+	bool bHasReplicatedAcceleration = false;
 };

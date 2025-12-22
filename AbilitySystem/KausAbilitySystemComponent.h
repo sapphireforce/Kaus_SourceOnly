@@ -17,6 +17,8 @@ class KAUS_API UKausAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	UKausAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
+	void ClearAbilityInput();
+
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 

@@ -1,22 +1,18 @@
-/*
-
-*/
-
 #pragma once
 
 #include "GameFramework/GameSession.h"
-#include "KausSession.generated.h"
+#include "KausGameSession.generated.h"
 
 /*
 * 
 */
 UCLASS(Config = Game)
-class KAUS_API AKausSession : public AGameSession
+class KAUS_API AKausGameSession : public AGameSession
 {
 	GENERATED_BODY()
 	
 public:
-	AKausSession(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	AKausGameSession(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
 	virtual bool ProcessAutoLogin() override;

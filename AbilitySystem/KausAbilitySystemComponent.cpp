@@ -9,6 +9,11 @@ UKausAbilitySystemComponent::UKausAbilitySystemComponent(const FObjectInitialize
 	SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
 
+void UKausAbilitySystemComponent::ClearAbilityInput()
+{
+	//todo: Spec Handler Clear
+}
+
 void UKausAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 	if (InputTag.IsValid())

@@ -9,9 +9,8 @@
 namespace KausCharacter
 {
 	static float GroundTraceDistance = 100000.0f;
-	FAutoConsoleVariableRef CVar_GroundTraceDistance(TEXT("LyraCharacter.GroundTraceDistance"), GroundTraceDistance, TEXT("Distance to trace down when generating ground information."), ECVF_Cheat);
+	FAutoConsoleVariableRef CVar_GroundTraceDistance(TEXT("KausCharacter.GroundTraceDistance"), GroundTraceDistance, TEXT("Distance to trace down when generating ground information."), ECVF_Cheat);
 };
-
 
 UKausCharacterMovementComponent::UKausCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -96,6 +95,12 @@ const FKausCharacterGroundInfo& UKausCharacterMovementComponent::GetGroundInfo()
 	CachedGroundInfo.LastUpdateFrame = GFrameCounter;
 
 	return CachedGroundInfo;
+}
+
+void UKausCharacterMovementComponent::SetReplicatedAcceleration(const FVector& InAcceleration)
+{
+	bHasReplicatedAcceleration = true;
+	Acceleration = InAcceleration;
 }
 
 void UKausCharacterMovementComponent::InitializeComponent()
