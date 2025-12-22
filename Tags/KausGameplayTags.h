@@ -1,0 +1,28 @@
+#pragma once
+#include "NativeGameplayTags.h"
+
+namespace KausGameplayTags
+{
+	//Message - UI
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Kaus_Event_UI_Toggle);
+
+	//Input - Native
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look_Mouse);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look_Stick);
+
+	//Game Phase
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_None);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Loading);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Title);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Exploration);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Battle);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Battle_PlayerTurn);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Phase_Battle_EnemyTurn);
+
+	//Event - Phase Changed
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Kaus_Event_Phase_Changed);
+
+	//Movement
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_MovementStopped);
+}
