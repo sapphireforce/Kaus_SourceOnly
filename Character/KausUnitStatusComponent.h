@@ -4,7 +4,7 @@
 #include "KausUnitStatusComponent.generated.h"
 
 class UKausAbilitySystemComponent;
-class UKausHealthSet;
+class UKausUnitAttributeSet;
 struct FGameplayEffectSpec;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FKausHealth_AttributeChanged, UKausUnitStatusComponent*, UnitStatusComponent, float, OldValue, float, NewValue, AActor*, Instigator);
@@ -52,10 +52,11 @@ public:
 	FKausHealth_AttributeChanged OnMaxHealthChanged;
 
 protected:
+	/** Pointer to the ability system component that is cached for convenience. */
 	UPROPERTY()
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 
+	/** Default Unit Status*/
 	UPROPERTY()
-	TObjectPtr<const UKausUnitAttributeSet> UnitAttrSet;
-
+	TObjectPtr<UKausUnitAttributeSet> UnitAttrSet;
 };

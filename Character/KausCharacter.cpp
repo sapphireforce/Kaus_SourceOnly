@@ -24,7 +24,6 @@ AKausCharacter::AKausCharacter(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
-	//todo: ÀÌ°Ô ¹¹Áö
 	SetNetCullDistanceSquared(900000000.0f);
 
 	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
@@ -52,14 +51,15 @@ AKausCharacter::AKausCharacter(const FObjectInitializer& ObjectInitializer)
 	KausMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	KausMoveComp->SetCrouchedHalfHeight(65.0f);
 
-
-	//todo:  Init and register Ability System(Store in PlayerState)
-	UnitExtComponent = CreateDefaultSubobject<UKausUnitExtensionComponent>(TEXT("PawnExtensionComponent"));
-	//UnitExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
-	//UnitExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
-
+	//NativeInput and Ability Input
 	PlayerUnitComponent = CreateDefaultSubobject<UKausPlayerUnitComponent>(TEXT("PlayerUnitComponent"));
+
+	//Character Status
 	UnitStatusComponent = CreateDefaultSubobject<UKausUnitStatusComponent>(TEXT("UnitStatusComponent"));
+
+	UnitExtComponent = CreateDefaultSubobject<UKausUnitExtensionComponent>(TEXT("PawnExtensionComponent"));
+	UnitExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
+	UnitExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());

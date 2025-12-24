@@ -8,6 +8,7 @@
  * UKausUnitAttributeSet
  *
  *	Class that defines attributes that are necessary for taking damage.
+ *  All Game Living Unit must contain KUausUnitAttributeSet
  *	Attribute examples include: health
  */
 UCLASS(BlueprintType)

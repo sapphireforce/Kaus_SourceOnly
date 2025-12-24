@@ -1,5 +1,6 @@
 #include "KausUnitExtensionComponent.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/KausUnitAttributeSet.h"
 
 UKausUnitExtensionComponent::UKausUnitExtensionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -9,7 +10,9 @@ UKausUnitExtensionComponent::UKausUnitExtensionComponent(const FObjectInitialize
 
 	SetIsReplicatedByDefault(true);
 
-	AbilitySystemComponent = nullptr;
+	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UKausAbilitySystemComponent>(this, TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
 
 UKausUnitExtensionComponent* UKausUnitExtensionComponent::FindPawnExtensionComponent(const AActor* Actor)
@@ -56,6 +59,11 @@ void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComp
 	AbilitySystemComponent = InASC;
 	AbilitySystemComponent->InitAbilityActorInfo(InOwnerActor, Pawn);
 
+	if (AbilitySystemComponent->GetAvatarActor())
+	{
+		OnAbilitySystemInitialized.Broadcast();
+	}
+
 	//todo tag SetTagRelationshipMapping
 }
 
@@ -94,4 +102,30 @@ void UKausUnitExtensionComponent::UninitializeAbilitySystem()
 UKausAbilitySystemComponent* UKausUnitExtensionComponent::GetKausAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+UAbilitySystemComponent* UKausUnitExtensionComponent::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void UKausUnitExtensionComponent::OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate Delegate)
+{
+	if (!OnAbilitySystemInitialized.IsBoundToObject(Delegate.GetUObject()))
+	{
+		OnAbilitySystemInitialized.Add(Delegate);
+	}
+
+	if (AbilitySystemComponent)
+	{
+		Delegate.Execute();
+	}
+}
+
+void UKausUnitExtensionComponent::OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate)
+{
+	if (!OnAbilitySystemUninitialized.IsBoundToObject(Delegate.GetUObject()))
+	{
+		OnAbilitySystemUninitialized.Add(Delegate);
+	}
 }

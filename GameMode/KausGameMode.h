@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "KausGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KAUS_API AKausGameMode : public AGameModeBase
+class KAUS_API AKausGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	

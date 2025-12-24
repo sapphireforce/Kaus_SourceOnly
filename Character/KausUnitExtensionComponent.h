@@ -1,17 +1,18 @@
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/PawnComponent.h"
+#include "AbilitySystemInterface.h"
 #include "KausUnitExtensionComponent.generated.h"
 
 class UKausAbilitySystemComponent;
+class UAbilitySystemComponent;
 
 /**
  * Component that adds functionality to all Pawn classes so it can be used for characters/vehicles/etc.
- * This coordinates the initialization of other components.
+ * 
  */
-UCLASS()
-class KAUS_API UKausUnitExtensionComponent : public UPawnComponent
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class KAUS_API UKausUnitExtensionComponent : public UPawnComponent, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
@@ -22,17 +23,29 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Kaus|Pawn")
 	static UKausUnitExtensionComponent* FindPawnExtensionComponent(const AActor* Actor);
 
-	/** Should be called by the owning pawn to become the avatar of the ability system. */
 	void InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor);
 
-	/** Should be called by the owning pawn to remove itself as the avatar of the ability system. */
 	void UninitializeAbilitySystem();
 
 	/** Gets the current ability system component, which may be owned by a different actor */
 	UFUNCTION(BlueprintPure, Category = "Kaus|Pawn")
 	UKausAbilitySystemComponent* GetKausAbilitySystemComponent() const;
 
-	/** Pointer to the ability system component that is cached for convenience. */
-	UPROPERTY(Transient)
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	/** Register with the OnAbilitySystemInitialized delegate and broadcast if our pawn has been registered with the ability system component */
+	void OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate Delegate);
+
+	/** Register with the OnAbilitySystemUninitialized delegate fired when our pawn is removed as the ability system's avatar actor */
+	void OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate);
+
+private:
+	UPROPERTY(VisibleAnywhere, Category = "Kaus|PlayerState")
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
+
+	/** Delegate fired when our pawn becomes the ability system's avatar actor */
+	FSimpleMulticastDelegate OnAbilitySystemInitialized;
+
+	/** Delegate fired when our pawn is removed as the ability system's avatar actor */
+	FSimpleMulticastDelegate OnAbilitySystemUninitialized;
 };

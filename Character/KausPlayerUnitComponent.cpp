@@ -3,6 +3,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "Input/KausInputComponent.h"
 #include "Tags/KausGameplayTags.h"
+#include "KausUnitExtensionComponent.h"
+#include "AbilitySystem/KausAbilitySystemComponent.h"
 
 namespace KausPlayerUnit
 {
@@ -63,12 +65,33 @@ bool UKausPlayerUnitComponent::IsReadyToBindInputs() const
 
 void UKausPlayerUnitComponent::Input_AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//todo
+	if (const APawn* Pawn = GetPawn<APawn>())
+	{
+		if (const UKausUnitExtensionComponent* PawnExtComp = UKausUnitExtensionComponent::FindPawnExtensionComponent(Pawn))
+		{
+			if (UKausAbilitySystemComponent* KausASC = PawnExtComp->GetKausAbilitySystemComponent())
+			{
+				KausASC->AbilityInputTagPressed(InputTag);
+			}
+		}
+	}
 }
 
 void UKausPlayerUnitComponent::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	//todo
+	const APawn* Pawn = GetPawn<APawn>();
+	if (!Pawn)
+	{
+		return;
+	}
+
+	if (const UKausUnitExtensionComponent* PawnExtComp = UKausUnitExtensionComponent::FindPawnExtensionComponent(Pawn))
+	{
+		if (UKausAbilitySystemComponent* KausASC = PawnExtComp->GetKausAbilitySystemComponent())
+		{
+			KausASC->AbilityInputTagReleased(InputTag);
+		}
+	}
 }
 
 void UKausPlayerUnitComponent::Input_Move(const FInputActionValue& InputActionValue)
