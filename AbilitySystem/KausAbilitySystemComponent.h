@@ -9,7 +9,7 @@
  *
  *	Base ability system component class used by this project.
  */
-UCLASS()
+UCLASS(ClassGroup = (Custom), Blueprintable)
 class KAUS_API UKausAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()

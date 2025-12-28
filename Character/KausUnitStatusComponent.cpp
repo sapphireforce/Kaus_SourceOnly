@@ -11,7 +11,8 @@ UKausUnitStatusComponent::UKausUnitStatusComponent(const FObjectInitializer& Obj
 	SetIsReplicatedByDefault(true);
 
 	AbilitySystemComponent = nullptr;
-	UnitAttrSet = nullptr;
+
+	UnitAttrSet = CreateDefaultSubobject<UKausUnitAttributeSet>(TEXT("UnitStatusAttributeSet"));
 }
 
 UKausUnitStatusComponent* UKausUnitStatusComponent::FindUnitStatusComponent(const AActor* Actor)
@@ -44,7 +45,6 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 		return;
 	}
 
-	UnitAttrSet = NewObject<UKausUnitAttributeSet>(Owner, TEXT("UnitStatusAttributeSet"));
 	if (!UnitAttrSet)
 	{
 		UE_LOG(LogTemp, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL health set on the ability system."), *GetNameSafe(Owner));
@@ -60,7 +60,7 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 	// 
 	//temp
 	//Init Unit Status (if you need, you can make unit init data from other component(ex UnitSpawnComponent)
-	//HandleHealthChanged(nullptr, nullptr, nullptr, 0.0f, UnitAttrSet->GetHealth(), UnitAttrSet->GetHealth());
+	HandleHealthChanged(nullptr, nullptr, nullptr, 0.0f, UnitAttrSet->GetHealth(), UnitAttrSet->GetHealth());
 }
 
 void UKausUnitStatusComponent::UninitializeFromAbilitySystem()

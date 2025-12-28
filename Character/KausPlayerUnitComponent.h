@@ -13,7 +13,7 @@ class UEnhancedInputLocalPlayerSubsystem;
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class KAUS_API UKausPlayerUnitComponent : public UPawnComponent
 {
 	GENERATED_BODY()

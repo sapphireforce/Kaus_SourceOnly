@@ -34,7 +34,7 @@ struct FKausCharacterGroundInfo
  *
  *	The base character movement component class used by this project.
  */
-UCLASS()
+UCLASS(ClassGroup = (Custom), Blueprintable)
 class KAUS_API UKausCharacterMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()

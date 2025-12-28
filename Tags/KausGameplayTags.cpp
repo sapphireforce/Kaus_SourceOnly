@@ -6,6 +6,14 @@ namespace KausGameplayTags
 	//UI
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Kaus_Event_UI_Toggle, "Kaus.Event.UI.Toggle", "HUD on/off Event");
 
+	//UI
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_Layer_Game, "UI.Layer.Game", "Primary Layout Game Layer");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_Layer_GameOnMenu, "UI.Layer.GameOnMenu", "Primary Layout GameOnMenu Layer");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_Layer_Menu, "UI.Layer.Menu", "Primary Layout Menu Layer");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_Layer_Modal, "UI.Layer.Modal", "Primary Layout Modal Layer");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_UI_HUD_MainCanvas, "UI.HUD.MainCanvas", "MainCanvas Widget");
+
 	//Phase
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Kaus_Event_Phase_Changed, "Kaus.Event.Phase.Changed", "Phase Change Event");
 
@@ -24,5 +32,9 @@ namespace KausGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Phase_Battle_EnemyTurn, "Phase.Battle.EnemyTurn", "Battle EnemyTurn State");
 
 	//Gameplay
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Gameplay_MovementStopped, "Gameplay.MovementStopped", "Movement Stopped")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Gameplay_MovementStopped, "Gameplay.MovementStopped", "Movement Stopped");
+
+	//Hardware
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Platform_Trait_Input_HardwareCursor, "Platform.Trait.Input.HardwareCursor", "HardwareCursor");
+
 }

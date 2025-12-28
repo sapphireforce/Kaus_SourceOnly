@@ -6,6 +6,8 @@
 #include "KausUIManagerSubsystem.generated.h"
 
 struct FKausMessage_UIToggle;
+class UKausUILayerConfig;
+
 
 /**
  * 
@@ -20,6 +22,9 @@ public:
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Kaus|UI")
+	void ApplyLayerConfig(const UKausUILayerConfig* LayerConfig, const UCommonLocalPlayer* LocalPlayer);
 
 private:
 	void HandleUIToggleMessage(FGameplayTag Channel, const FKausMessage_UIToggle& Payload);

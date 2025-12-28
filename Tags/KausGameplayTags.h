@@ -6,6 +6,16 @@ namespace KausGameplayTags
 	//Message - UI
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Kaus_Event_UI_Toggle);
 
+	//UI
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_UI_Layer_Game);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_UI_Layer_GameOnMenu);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_UI_Layer_Menu);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_UI_Layer_Modal);
+
+	//UI - HUD - Panel 
+	/* todo: make more simple and concise */
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_UI_HUD_MainCanvas);
+
 	//Input - Native
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look_Mouse);
@@ -25,4 +35,7 @@ namespace KausGameplayTags
 
 	//Movement
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_MovementStopped);
+
+	//Hardware
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Platform_Trait_Input_HardwareCursor);
 }

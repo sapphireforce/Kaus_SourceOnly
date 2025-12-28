@@ -6,6 +6,9 @@
 #include "Message/KausMessageTypes.h"
 #include "Tags/KausGameplayTags.h"
 
+#include "UI/KausUILayerConfig.h"
+#include "UI/KausPrimaryGameLayout.h"
+
 UKausUIManagerSubsystem::UKausUIManagerSubsystem()
 {
 }
@@ -15,7 +18,6 @@ void UKausUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 	UGameplayMessageSubsystem& MessageSubsystem = UGameplayMessageSubsystem::Get(GetGameInstance());
-
 	UIToggleListenerHandle = MessageSubsystem.RegisterListener(
 		KausGameplayTags::TAG_Kaus_Event_UI_Toggle,
 		this,
@@ -31,6 +33,36 @@ void UKausUIManagerSubsystem::Deinitialize()
 	}
 
 	Super::Deinitialize();
+}
+
+void UKausUIManagerSubsystem::ApplyLayerConfig(const UKausUILayerConfig* LayerConfig, const UCommonLocalPlayer* LocalPlayer)
+{
+	if (!LayerConfig || !LocalPlayer) return;
+
+	UGameUIManagerSubsystem* GameUIManager = GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>();
+	if (!GameUIManager) return;
+
+	UGameUIPolicy* Policy = Cast<UGameUIPolicy>(GameUIManager->GetCurrentUIPolicy());
+	if (!Policy)
+	{
+		UE_LOG(LogTemp, Error, TEXT("UI Policy is NULL! Check DefaultGame.ini"));
+		return;
+	}
+
+	UKausPrimaryGameLayout* RootLayout = Cast<UKausPrimaryGameLayout>(Policy->GetRootLayout(LocalPlayer));
+	if (!RootLayout)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("RootLayout not found for Player [%s]"), *LocalPlayer->GetName());
+		return;
+	}
+
+	for (const FKausLayerEntry& Entry : LayerConfig->LayerEntries)
+	{
+		if (Entry.LayerTag.IsValid() && Entry.WidgetClass)
+		{
+			RootLayout->PushWidgetToLayerStack(Entry.LayerTag, Entry.WidgetClass);
+		}
+	}
 }
 
 void UKausUIManagerSubsystem::HandleUIToggleMessage(FGameplayTag Channel, const FKausMessage_UIToggle& Payload)

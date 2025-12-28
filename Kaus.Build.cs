@@ -30,7 +30,9 @@ public class Kaus : ModuleRules
 
             "GameplayAbilities",
             "GameplayTasks",
-            "GameplayTags"
+            "GameplayTags",
+
+            "UIExtension",
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

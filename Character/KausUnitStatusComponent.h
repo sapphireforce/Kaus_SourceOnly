@@ -9,7 +9,7 @@ struct FGameplayEffectSpec;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FKausHealth_AttributeChanged, UKausUnitStatusComponent*, UnitStatusComponent, float, OldValue, float, NewValue, AActor*, Instigator);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), Blueprintable)
 class KAUS_API UKausUnitStatusComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -51,12 +51,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FKausHealth_AttributeChanged OnMaxHealthChanged;
 
-protected:
+	/** Default Unit Status*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Kaus|Attribute")
+	TObjectPtr<UKausUnitAttributeSet> UnitAttrSet;
+
+private:
 	/** Pointer to the ability system component that is cached for convenience. */
 	UPROPERTY()
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 
-	/** Default Unit Status*/
-	UPROPERTY()
-	TObjectPtr<UKausUnitAttributeSet> UnitAttrSet;
 };
