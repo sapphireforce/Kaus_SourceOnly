@@ -6,7 +6,7 @@
 #include "Player/KausPlayerState.h"
 #include "Character/KausCharacter.h"
 #include "UI/KausHUD.h"
-
+#include "Logs/KausLogChannels.h"
 
 AKausGameMode::AKausGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -26,7 +26,7 @@ void AKausGameMode::InitGame(const FString& MapName, const FString& Options, FSt
 
 	UKausAssetManager::Get().GetGameData();
 
-	UE_LOG(LogTemp, Log, TEXT("KausGameMode: InitGame Complete. Global Data Loaded. Map: %s"), *MapName);
+	UE_LOG(LogKaus, Log, TEXT("KausGameMode: InitGame Complete. Global Data Loaded. Map: %s"), *MapName);
 }
 
 void AKausGameMode::StartPlay()

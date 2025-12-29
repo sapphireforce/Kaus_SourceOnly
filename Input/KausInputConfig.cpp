@@ -1,4 +1,5 @@
 #include "KausInputConfig.h"
+#include "Logs/KausLogChannels.h"
 
 UKausInputConfig::UKausInputConfig(const FObjectInitializer& ObjectInitializer)
 {
@@ -20,7 +21,7 @@ const UInputAction* UKausInputConfig::FindNativeInputActionForTag(const FGamepla
 
 	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find NativeInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
+		UE_LOG(LogKaus, Error, TEXT("Can't find NativeInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
 	}
 
 	return nullptr;
@@ -35,7 +36,7 @@ const UInputAction* UKausInputConfig::FindAbilityInputActionForTag(const FGamepl
 
 	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find AbilityInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
+		UE_LOG(LogKaus, Error, TEXT("Can't find AbilityInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
 	}
 
 	return nullptr;
@@ -50,7 +51,7 @@ void UKausInputConfig::MappingInputMaps()
 		{
 			if (NativeInputTagMap.Contains(Action.InputTag))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Duplicated InputTag [%s] in NativeInputActions of [%s]. Overwriting."), *Action.InputTag.ToString(), *GetName());
+				UE_LOG(LogKaus, Warning, TEXT("Duplicated InputTag [%s] in NativeInputActions of [%s]. Overwriting."), *Action.InputTag.ToString(), *GetName());
 			}
 			NativeInputTagMap.Add(Action.InputTag, Action.InputAction);
 		}
@@ -63,7 +64,7 @@ void UKausInputConfig::MappingInputMaps()
 		{
 			if (AbilityInputTagMap.Contains(Action.InputTag))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Duplicated InputTag [%s] in AbilityInputActions of [%s]. Overwriting."), *Action.InputTag.ToString(), *GetName());
+				UE_LOG(LogKaus, Warning, TEXT("Duplicated InputTag [%s] in AbilityInputActions of [%s]. Overwriting."), *Action.InputTag.ToString(), *GetName());
 			}
 			AbilityInputTagMap.Add(Action.InputTag, Action.InputAction);
 		}

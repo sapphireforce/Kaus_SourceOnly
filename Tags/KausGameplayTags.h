@@ -36,6 +36,10 @@ namespace KausGameplayTags
 	//Movement
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_MovementStopped);
 
+	//Interaction
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_INTERACTION_DURATION_MESSAGE);
+
+
 	//Hardware
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Platform_Trait_Input_HardwareCursor);
 }

@@ -1,6 +1,7 @@
 #include "KausUnitExtensionComponent.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/KausUnitAttributeSet.h"
+#include "Logs/KausLogChannels.h"
 
 UKausUnitExtensionComponent::UKausUnitExtensionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -40,11 +41,11 @@ void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComp
 	APawn* Pawn = GetPawnChecked<APawn>();
 	AActor* ExistingAvatar = InASC->GetAvatarActor();
 
-	UE_LOG(LogTemp, Verbose, TEXT("Setting up ASC [%s] on pawn [%s] owner [%s], existing [%s] "), *GetNameSafe(InASC), *GetNameSafe(Pawn), *GetNameSafe(InOwnerActor), *GetNameSafe(ExistingAvatar));
+	UE_LOG(LogKausAbilitySystem, Verbose, TEXT("Setting up ASC [%s] on pawn [%s] owner [%s], existing [%s] "), *GetNameSafe(InASC), *GetNameSafe(Pawn), *GetNameSafe(InOwnerActor), *GetNameSafe(ExistingAvatar));
 
 	if ((ExistingAvatar != nullptr) && (ExistingAvatar != Pawn))
 	{
-		UE_LOG(LogTemp, Log, TEXT("Existing avatar (authority=%d)"), ExistingAvatar->HasAuthority() ? 1 : 0);
+		UE_LOG(LogKausAbilitySystem, Log, TEXT("Existing avatar (authority=%d)"), ExistingAvatar->HasAuthority() ? 1 : 0);
 
 		// There is already a pawn acting as the ASC's avatar, so we need to kick it out
 		// This can happen on clients if they're lagged: their new pawn is spawned + possessed before the dead one is removed

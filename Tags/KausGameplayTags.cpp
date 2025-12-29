@@ -34,6 +34,10 @@ namespace KausGameplayTags
 	//Gameplay
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Gameplay_MovementStopped, "Gameplay.MovementStopped", "Movement Stopped");
 
+	//Interaction
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_INTERACTION_DURATION_MESSAGE, "Ability.Interaction.Duration.Message", "Interaction System, Duration Mesage");
+
+
 	//Hardware
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Platform_Trait_Input_HardwareCursor, "Platform.Trait.Input.HardwareCursor", "HardwareCursor");
 

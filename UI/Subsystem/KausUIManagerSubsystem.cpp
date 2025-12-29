@@ -9,6 +9,8 @@
 #include "UI/KausUILayerConfig.h"
 #include "UI/KausPrimaryGameLayout.h"
 
+#include "Logs/KausLogChannels.h"
+
 UKausUIManagerSubsystem::UKausUIManagerSubsystem()
 {
 }
@@ -45,14 +47,14 @@ void UKausUIManagerSubsystem::ApplyLayerConfig(const UKausUILayerConfig* LayerCo
 	UGameUIPolicy* Policy = Cast<UGameUIPolicy>(GameUIManager->GetCurrentUIPolicy());
 	if (!Policy)
 	{
-		UE_LOG(LogTemp, Error, TEXT("UI Policy is NULL! Check DefaultGame.ini"));
+		UE_LOG(LogKaus, Error, TEXT("UI Policy is NULL! Check DefaultGame.ini"));
 		return;
 	}
 
 	UKausPrimaryGameLayout* RootLayout = Cast<UKausPrimaryGameLayout>(Policy->GetRootLayout(LocalPlayer));
 	if (!RootLayout)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("RootLayout not found for Player [%s]"), *LocalPlayer->GetName());
+		UE_LOG(LogKaus, Warning, TEXT("RootLayout not found for Player [%s]"), *LocalPlayer->GetName());
 		return;
 	}
 
@@ -82,7 +84,7 @@ void UKausUIManagerSubsystem::SetRootLayoutVisibility(bool bVisible)
 				ESlateVisibility NewVisibility = bVisible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed;
 				RootLayout->SetVisibility(NewVisibility);
 
-				UE_LOG(LogTemp, Log, TEXT("[QA] Set UI Visibility: %d"), bVisible);
+				UE_LOG(LogKaus, Log, TEXT("[QA] Set UI Visibility: %d"), bVisible);
 			}
 		}
 	}

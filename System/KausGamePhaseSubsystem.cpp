@@ -2,6 +2,7 @@
 #include "Tags/KausGameplayTags.h"
 #include "Message/KausMessageTypes.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
+#include "Logs/KausLogChannels.h"
 
 void UKausGamePhaseSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -31,7 +32,7 @@ void UKausGamePhaseSubsystem::PushPhase(FGameplayTag NewPhase)
 
 	if (OldPhase == NewPhase)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Attempted to push same phase [%s]. Ignoring."), *NewPhase.ToString());
+		UE_LOG(LogKaus, Warning, TEXT("Attempted to push same phase [%s]. Ignoring."), *NewPhase.ToString());
 		return;
 	}
 
@@ -44,7 +45,7 @@ void UKausGamePhaseSubsystem::PopPhase()
 {
 	if (PhaseStack.Num() <= 1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Cannot PopPhase. Stack is empty or at base level."));
+		UE_LOG(LogKaus, Warning, TEXT("Cannot PopPhase. Stack is empty or at base level."));
 		return;
 	}
 
@@ -70,7 +71,7 @@ void UKausGamePhaseSubsystem::BroadcastPhaseChange(FGameplayTag PreviousPhase, F
 {
 	if (PreviousPhase == NewPhase) return;
 
-	UE_LOG(LogTemp, Log, TEXT("[Phase] Changed: [%s] -> [%s] (StackDepth: %d)"),
+	UE_LOG(LogKaus, Log, TEXT("[Phase] Changed: [%s] -> [%s] (StackDepth: %d)"),
 		*PreviousPhase.ToString(),
 		*NewPhase.ToString(),
 		PhaseStack.Num());

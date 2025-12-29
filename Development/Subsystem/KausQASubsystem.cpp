@@ -3,6 +3,7 @@
 #include "Message/KausMessageTypes.h"  
 #include "Engine/GameInstance.h"
 #include "Tags/KausGameplayTags.h"
+#include "Logs/KausLogChannels.h"
 
 UKausQASubsystem::UKausQASubsystem()
 {
@@ -17,7 +18,7 @@ void UKausQASubsystem::Kaus_ShowUI(bool bShow)
 
 	MessageSubsystem.BroadcastMessage(KausGameplayTags::TAG_Kaus_Event_UI_Toggle, Message);
 
-	UE_LOG(LogTemp, Log, TEXT("[QA] Broadcast UI Toggle Message: %d"), bShow);
+	UE_LOG(LogKaus, Log, TEXT("[QA] Broadcast UI Toggle Message: %d"), bShow);
 }
 
 

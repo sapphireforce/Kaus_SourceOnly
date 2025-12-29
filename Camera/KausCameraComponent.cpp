@@ -1,6 +1,7 @@
 #include "KausCameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Actor.h"
+#include "Logs/KausLogChannels.h"
 
 UKausCameraComponent::UKausCameraComponent()
 {
@@ -43,7 +44,7 @@ void UKausCameraComponent::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UKausCameraComponent: Could not find USpringArmComponent on Owner [%s]"), *GetNameSafe(GetOwner()));
+		UE_LOG(LogKaus, Warning, TEXT("UKausCameraComponent: Could not find USpringArmComponent on Owner [%s]"), *GetNameSafe(GetOwner()));
 	}
 }
 
@@ -94,7 +95,7 @@ void UKausCameraComponent::SetCameraMode(EKausCameraMode NewMode)
 			}
 		}
 
-		UE_LOG(LogTemp, Log, TEXT("[KausCamera] Mode Changed to: %d"), (uint8)NewMode);
+		UE_LOG(LogKaus, Log, TEXT("[KausCamera] Mode Changed to: %d"), (uint8)NewMode);
 	}
 }
 

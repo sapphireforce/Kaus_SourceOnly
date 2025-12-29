@@ -1,5 +1,6 @@
 #include "KausAssetManager.h"
 #include "KausGameData.h"
+#include "Logs/KausLogChannels.h"
 
 UKausAssetManager::UKausAssetManager()
 {
@@ -14,7 +15,7 @@ UKausAssetManager& UKausAssetManager::Get()
 		return *Singleton;
 	}
 
-	UE_LOG(LogTemp, Fatal, TEXT("Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to KausAssetManager!"));
+	UE_LOG(LogKaus, Fatal, TEXT("Invalid AssetManagerClassName in DefaultEngine.ini.  It must be set to KausAssetManager!"));
 
 	return *NewObject<UKausAssetManager>();
 }
@@ -46,7 +47,7 @@ const UKausGameData& UKausAssetManager::GetGameData()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to load KausGameData! Check DefaultEngine.ini"));
+		UE_LOG(LogKaus, Error, TEXT("Failed to load KausGameData! Check DefaultEngine.ini"));
 		CachedGameData = NewObject<UKausGameData>();
 	}
 

@@ -1,6 +1,7 @@
 #include "KausUnitStatusComponent.h"
 #include "AbilitySystem/Attributes/KausUnitAttributeSet.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
+#include "Logs/KausLogChannels.h"
 
 UKausUnitStatusComponent::UKausUnitStatusComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -34,20 +35,20 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 
 	if (AbilitySystemComponent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("KausUnitStatusComponent: UnitStatus component for owner [%s] has already been initialized with an ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogKausAbilitySystem, Error, TEXT("KausUnitStatusComponent: UnitStatus component for owner [%s] has already been initialized with an ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
 	AbilitySystemComponent = InASC;
 	if (!AbilitySystemComponent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogKausAbilitySystem, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
 	if (!UnitAttrSet)
 	{
-		UE_LOG(LogTemp, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL health set on the ability system."), *GetNameSafe(Owner));
+		UE_LOG(LogKausAbilitySystem, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL health set on the ability system."), *GetNameSafe(Owner));
 		return;
 	}
 
@@ -60,7 +61,8 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 	// 
 	//temp
 	//Init Unit Status (if you need, you can make unit init data from other component(ex UnitSpawnComponent)
-	HandleHealthChanged(nullptr, nullptr, nullptr, 0.0f, UnitAttrSet->GetHealth(), UnitAttrSet->GetHealth());
+	HandleMaxHealthChanged(nullptr, nullptr, nullptr, 0.0f, UnitAttrSet->GetHealth(), /*UnitAttrSet->GetHealth()*/ 100);
+	HandleHealthChanged(nullptr, nullptr, nullptr, 0.0f, UnitAttrSet->GetHealth(), /*UnitAttrSet->GetHealth()*/ 100);
 }
 
 void UKausUnitStatusComponent::UninitializeFromAbilitySystem()
