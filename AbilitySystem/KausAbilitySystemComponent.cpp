@@ -47,3 +47,9 @@ void UKausAbilitySystemComponent::ProcessAbilityInput(const FGameplayTag& InputT
 		}
 	}
 }
+
+
+bool UKausAbilitySystemComponent::IsReady() const
+{
+	return AbilityActorInfo.IsValid();
+}

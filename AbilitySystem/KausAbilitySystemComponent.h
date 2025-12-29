@@ -24,4 +24,5 @@ public:
 
 	void ProcessAbilityInput(const FGameplayTag& InputTag, bool bPressed);
 
+	bool IsReady() const;
 };

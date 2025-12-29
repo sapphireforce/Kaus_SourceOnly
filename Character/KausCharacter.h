@@ -125,9 +125,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Kaus|Status")
 	TObjectPtr<UKausUnitStatusComponent> UnitStatusComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Kaus|Config")
+	FGameplayTag UnitID;
+
 private:
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
 	FKausReplicatedAcceleration ReplicatedAcceleration;
 
 	FGameplayMessageListenerHandle PhaseChangeListenerHandle;
+
 };

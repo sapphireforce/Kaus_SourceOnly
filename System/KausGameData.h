@@ -6,6 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "KausGameData.generated.h"
 
+struct FKausUnitStatsRow;
+struct FGameplayTag;
 /**
  *  Non-mutable data asset that contains global game data.
  */
@@ -17,14 +19,12 @@ class KAUS_API UKausGameData : public UPrimaryDataAsset
 public:
 	UKausGameData();
 	
-
-
-
-
-
 	static const UKausGameData& Get();
 
+	const FKausUnitStatsRow* GetUnitStats(FGameplayTag UnitTag) const;
+
 public:
-	//data
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameData|Stats")
+	TObjectPtr<const UDataTable> UnitStatsTable;
+
 };

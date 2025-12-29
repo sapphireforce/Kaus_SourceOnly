@@ -117,9 +117,12 @@ void UKausUnitExtensionComponent::OnAbilitySystemInitialized_RegisterAndCall(FSi
 		OnAbilitySystemInitialized.Add(Delegate);
 	}
 
-	if (AbilitySystemComponent)
+	if (AbilitySystemComponent && AbilitySystemComponent->IsReady())
 	{
-		Delegate.Execute();
+		if (AbilitySystemComponent->GetAvatarActor())
+		{
+			Delegate.Execute();
+		}
 	}
 }
 
