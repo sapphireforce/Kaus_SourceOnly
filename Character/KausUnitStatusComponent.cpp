@@ -37,6 +37,7 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 	AActor* Owner = GetOwner();
 	check(Owner);
 
+
 	if (AbilitySystemComponent)
 	{
 		UE_LOG(LogKausAbilitySystem, Error, TEXT("KausUnitStatusComponent: UnitStatus component for owner [%s] has already been initialized with an ability system."), *GetNameSafe(Owner));
@@ -55,6 +56,7 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 		UE_LOG(LogKausAbilitySystem, Error, TEXT("KausUnitStatusComponent: Cannot initialize UnitStatus component for owner [%s] with NULL health set on the ability system."), *GetNameSafe(Owner));
 		return;
 	}
+
 
 	AbilitySystemComponent->AddAttributeSetSubobject(Cast<UAttributeSet>(UnitAttrSet));
 

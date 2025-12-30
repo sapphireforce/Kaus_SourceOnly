@@ -51,15 +51,17 @@ AKausCharacter::AKausCharacter(const FObjectInitializer& ObjectInitializer)
 	KausMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	KausMoveComp->SetCrouchedHalfHeight(65.0f);
 
+	AbilitySystemComponent = CreateDefaultSubobject<UKausAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	UnitExtComponent = CreateDefaultSubobject<UKausUnitExtensionComponent>(TEXT("UnitExtensionComponent"));
+
 	//NativeInput and Ability Input
 	PlayerUnitComponent = CreateDefaultSubobject<UKausPlayerUnitComponent>(TEXT("PlayerUnitComponent"));
 
 	//Character Status
 	UnitStatusComponent = CreateDefaultSubobject<UKausUnitStatusComponent>(TEXT("UnitStatusComponent"));
-
-	UnitExtComponent = CreateDefaultSubobject<UKausUnitExtensionComponent>(TEXT("PawnExtensionComponent"));
-	UnitExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
-	UnitExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
@@ -91,6 +93,7 @@ AKausPlayerState* AKausCharacter::GetKausPlayerState() const
 
 UKausAbilitySystemComponent* AKausCharacter::GetKausAbilitySystemComponent() const
 {
+	//todo call GetKausAbilitySystemComponent
 	return Cast<UKausAbilitySystemComponent>(GetAbilitySystemComponent());
 }
 
@@ -101,7 +104,7 @@ UAbilitySystemComponent* AKausCharacter::GetAbilitySystemComponent() const
 		return nullptr;
 	}
 
-	return UnitExtComponent->GetKausAbilitySystemComponent();
+	return UnitExtComponent->GetAbilitySystemComponent();
 }
 
 void AKausCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
@@ -140,6 +143,17 @@ bool AKausCharacter::HasAnyMatchingGameplayTags(const FGameplayTagContainer& Tag
 	}
 
 	return false;
+}
+
+void AKausCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (UnitExtComponent && AbilitySystemComponent)
+	{
+		UnitExtComponent->OnAbilitySystemInitialized.AddUObject(this, &ThisClass::OnAbilitySystemInitialized);
+		UnitExtComponent->InitializeAbilitySystem(AbilitySystemComponent, this);
+	}
 }
 
 void AKausCharacter::PreInitializeComponents()
@@ -196,10 +210,10 @@ void AKausCharacter::NotifyControllerChanged()
 
 void AKausCharacter::OnAbilitySystemInitialized()
 {
-	UKausAbilitySystemComponent* KausASC = GetKausAbilitySystemComponent();
-	check(KausASC);
-
-	UnitStatusComponent->InitializeWithAbilitySystem(KausASC);
+	if (UnitStatusComponent && AbilitySystemComponent)
+	{
+		UnitStatusComponent->InitializeWithAbilitySystem(AbilitySystemComponent);
+	}
 
 	//InitializeGameplayTags();
 }
@@ -217,6 +231,11 @@ void AKausCharacter::PossessedBy(AController* NewController)
 void AKausCharacter::UnPossessed()
 {
 	Super::UnPossessed();
+}
+
+void AKausCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
 }
 
 void AKausCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

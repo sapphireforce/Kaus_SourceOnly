@@ -2,12 +2,11 @@
 
 */
 #pragma once
-
 #include "Engine/DataAsset.h"
+#include "Data/KausUnitStatsRowData.h"
+#include "GameplayTagContainer.h"
 #include "KausGameData.generated.h"
 
-struct FKausUnitStatsRow;
-struct FGameplayTag;
 /**
  *  Non-mutable data asset that contains global game data.
  */
@@ -23,8 +22,23 @@ public:
 
 	const FKausUnitStatsRow* GetUnitStats(FGameplayTag UnitTag) const;
 
+	virtual void PostLoad() override;
+
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+	void HandleDataTableChanged();
+#endif
+
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameData|Stats")
-	TObjectPtr<const UDataTable> UnitStatsTable;
+	TObjectPtr<UDataTable> UnitStatsTable;
+
+private:
+	void BuildUnitStatsCache();
+
+private:
+	UPROPERTY(Transient)
+	TMap<FGameplayTag, FKausUnitStatsRow> UnitStatsCache;
 
 };

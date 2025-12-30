@@ -23,29 +23,19 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Kaus|Pawn")
 	static UKausUnitExtensionComponent* FindPawnExtensionComponent(const AActor* Actor);
 
-	void InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor);
-
-	void UninitializeAbilitySystem();
-
 	/** Gets the current ability system component, which may be owned by a different actor */
 	UFUNCTION(BlueprintPure, Category = "Kaus|Pawn")
 	UKausAbilitySystemComponent* GetKausAbilitySystemComponent() const;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	/** Register with the OnAbilitySystemInitialized delegate and broadcast if our pawn has been registered with the ability system component */
-	void OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate Delegate);
+	void InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor);
 
-	/** Register with the OnAbilitySystemUninitialized delegate fired when our pawn is removed as the ability system's avatar actor */
-	void OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate Delegate);
+	void UninitializeAbilitySystem();
 
-private:
-	UPROPERTY(VisibleAnywhere, Category = "Kaus|PlayerState")
-	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
-
-	/** Delegate fired when our pawn becomes the ability system's avatar actor */
 	FSimpleMulticastDelegate OnAbilitySystemInitialized;
 
-	/** Delegate fired when our pawn is removed as the ability system's avatar actor */
-	FSimpleMulticastDelegate OnAbilitySystemUninitialized;
+protected:
+	UPROPERTY()
+	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 };

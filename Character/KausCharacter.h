@@ -72,6 +72,8 @@ public:
 	virtual bool HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const override;
 
 	//~AActor interface
+	virtual void PostInitializeComponents() override;
+
 	virtual void PreInitializeComponents() override;
 
 	virtual void BeginPlay() override;
@@ -89,13 +91,15 @@ public:
 	virtual void NotifyControllerChanged() override;
 	//~End of APawn interface
 
-	virtual void OnAbilitySystemInitialized();
+	void OnAbilitySystemInitialized();
 	
-	virtual void OnAbilitySystemUninitialized();
+	void OnAbilitySystemUninitialized();
 
 	virtual void PossessedBy(AController* NewController) override;
 	
 	virtual void UnPossessed() override;
+
+	virtual void OnRep_PlayerState() override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
@@ -115,6 +119,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Kaus|Camera")
 	TObjectPtr<UKausCameraComponent> CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Kaus|GAS")
+	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Kaus|Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UKausUnitExtensionComponent> UnitExtComponent;
