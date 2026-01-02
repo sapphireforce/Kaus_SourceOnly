@@ -1,6 +1,6 @@
 #include "KausGameData.h"
 #include "KausAssetManager.h"
-#include "Data/KausUnitStatsRowData.h"
+#include "DataTable/KausUnitStatsRow.h"
 #include "NativeGameplayTags.h"
 #include "Logs/KausLogChannels.h"
 

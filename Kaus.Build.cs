@@ -33,6 +33,8 @@ public class Kaus : ModuleRules
             "GameplayTags",
 
             "UIExtension",
+
+            "PhysicsCore"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

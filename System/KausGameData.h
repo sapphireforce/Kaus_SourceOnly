@@ -3,7 +3,7 @@
 */
 #pragma once
 #include "Engine/DataAsset.h"
-#include "Data/KausUnitStatsRowData.h"
+#include "DataTable/KausUnitStatsRow.h"
 #include "GameplayTagContainer.h"
 #include "KausGameData.generated.h"
 

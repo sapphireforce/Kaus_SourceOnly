@@ -38,4 +38,11 @@ public:
 protected:
 	UPROPERTY()
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
+
+	//TODO
+	//AbilitySets
+
+	//TagRelationshipMapping
+	
+
 };

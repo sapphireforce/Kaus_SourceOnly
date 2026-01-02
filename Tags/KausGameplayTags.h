@@ -42,4 +42,21 @@ namespace KausGameplayTags
 
 	//Hardware
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Platform_Trait_Input_HardwareCursor);
+
+	//Ability System - Message
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_ABILITY_SIMPLE_FAILURE_MESSAGE);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_ABILITY_PLAY_MONTAGE_FAILURE_MESSAGE);
+
+	//Unit status state
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Unit_Status_Death);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Unit_Status_Death_Dying);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Unit_Status_Death_Dead);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_IsDead);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_Cooldown);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_Cost);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_TagsBlocked);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_TagsMissing);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_Networking);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_ActivateFail_ActivationGroup);
 }

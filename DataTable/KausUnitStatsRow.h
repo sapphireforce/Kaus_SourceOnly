@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/DataTable.h"
 #include "GameplayTagContainer.h"
-#include "KausUnitStatsRowData.generated.h"
+#include "KausUnitStatsRow.generated.h"
 
 USTRUCT(BlueprintType)
 struct FKausUnitStatsRow : public FTableRowBase

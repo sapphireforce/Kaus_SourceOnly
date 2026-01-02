@@ -4,7 +4,7 @@
 #include "Logs/KausLogChannels.h"
 #include "KausCharacter.h"
 #include "System/KausGameData.h"
-#include "Data/KausUnitStatsRowData.h"
+#include "DataTable/KausUnitStatsRow.h"
 
 
 UKausUnitStatusComponent::UKausUnitStatusComponent(const FObjectInitializer& ObjectInitializer)
