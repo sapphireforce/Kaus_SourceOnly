@@ -42,9 +42,6 @@ protected:
 	virtual void HandleHealthChanged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec* DamageEffectSpec, float DamageMagnitude, float OldValue, float NewValue);
 
 	virtual void HandleMaxHealthChanged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec* DamageEffectSpec, float DamageMagnitude, float OldValue, float NewValue);
-
-	void ApplyUnitStatsFromData();
-
 public:
 	UPROPERTY(BlueprintAssignable)
 	FKausHealth_AttributeChanged OnHealthChanged;

@@ -1,6 +1,7 @@
 #include "AbilitySystem/KausUnitAbilityData.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "Logs/KausLogChannels.h"
+#include "Attributes/KausAttributeSet.h"
 
 void FKausAbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {
@@ -64,7 +65,7 @@ UKausUnitAbilityData::UKausUnitAbilityData(const FObjectInitializer& ObjectIniti
 {
 }
 
-void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject) const
+void UKausUnitAbilityData::GiveToAbilitySystem(FGameplayTag UnitID, UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject) const
 {
 	check(KausASC);
 
@@ -75,7 +76,8 @@ void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* Kaus
 	}
 
 	// Grant the attribute sets.
-	for (int32 SetIndex = 0; SetIndex < GrantedAttributes.Num(); ++SetIndex)
+	const int32 AttrSize = GrantedAttributes.Num();
+	for (int32 SetIndex = 0; SetIndex < AttrSize; ++SetIndex)
 	{
 		const FKausAbilitySet_AttributeSet& SetToGrant = GrantedAttributes[SetIndex];
 
@@ -85,7 +87,8 @@ void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* Kaus
 			continue;
 		}
 
-		UAttributeSet* NewSet = NewObject<UAttributeSet>(KausASC->GetOwner(), SetToGrant.AttributeSet);
+		UKausAttributeSet* NewSet = NewObject<UKausAttributeSet>(KausASC->GetOwner(), SetToGrant.AttributeSet);
+		NewSet->ApplyDataRowToAttribute(UnitID);
 		KausASC->AddAttributeSetSubobject(NewSet);
 
 		if (OutGrantedHandles)
@@ -95,7 +98,8 @@ void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* Kaus
 	}
 
 	// Grant the gameplay abilities.
-	for (int32 AbilityIndex = 0; AbilityIndex < GrantedGameplayAbilities.Num(); ++AbilityIndex)
+	const int32 AbilitySize = GrantedGameplayAbilities.Num();
+	for (int32 AbilityIndex = 0; AbilityIndex < AbilitySize; ++AbilityIndex)
 	{
 		const FKausAbilitySet_GameplayAbility& AbilityToGrant = GrantedGameplayAbilities[AbilityIndex];
 
@@ -120,7 +124,8 @@ void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* Kaus
 	}
 
 	// Grant the gameplay effects.
-	for (int32 EffectIndex = 0; EffectIndex < GrantedGameplayEffects.Num(); ++EffectIndex)
+	const int32 EffectSize = GrantedGameplayEffects.Num();
+	for (int32 EffectIndex = 0; EffectIndex < EffectSize; ++EffectIndex)
 	{
 		const FKausAbilitySet_GameplayEffect& EffectToGrant = GrantedGameplayEffects[EffectIndex];
 

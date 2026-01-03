@@ -5,6 +5,7 @@
 #include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "Attributes/KausAttributeRowInterface.h"
 #include "KausUnitAbilityData.generated.h"
 
 class UAttributeSet;
@@ -73,6 +74,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UAttributeSet> AttributeSet;
 
+	// Data table referent to initialize the attributes with, if any (can be left unset)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AssetBundles = "Client,Server"))
+	TSubclassOf<UDataTable> InitializationData;
 };
 
 /**
@@ -114,7 +118,7 @@ protected:
  *	Non-mutable data asset used to grant gameplay abilities and gameplay effects.
  */
 UCLASS(BlueprintType, Const)
-class KAUS_API UKausUnitAbilityData : public UPrimaryDataAsset
+class KAUS_API UKausUnitAbilityData : public UPrimaryDataAsset, public IKausAttributeRowInterface
 {
 	GENERATED_BODY()
 	
@@ -124,9 +128,8 @@ public:
 
 	// Grants the ability set to the specified ability system component.
 	// The returned handles can be used later to take away anything that was granted.
-	void GiveToAbilitySystem(UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject = nullptr) const;
+	void GiveToAbilitySystem(FGameplayTag UnitID, UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject = nullptr) const;
 
-	
 protected:
 	// Gameplay abilities to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Abilities", meta = (TitleProperty = Ability))

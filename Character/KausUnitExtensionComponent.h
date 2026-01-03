@@ -2,6 +2,7 @@
 
 #include "Components/PawnComponent.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySystem/KausUnitAbilityData.h"
 #include "KausUnitExtensionComponent.generated.h"
 
 class UKausAbilitySystemComponent;
@@ -29,7 +30,7 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	void InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor);
+	void InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor, FGameplayTag UnitID);
 
 	void UninitializeAbilitySystem();
 
@@ -39,8 +40,12 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 
-	//TODO
-	//AbilitySets
+	// List of ability sets to grant to actors of the specified class
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Kaus|Ability")
+	TObjectPtr<const UKausUnitAbilityData> UnitAbilityData;
+
+	UPROPERTY(Transient)
+	FKausAbilitySet_GrantedHandles GrantedHandles;
 
 	//TagRelationshipMapping
 	

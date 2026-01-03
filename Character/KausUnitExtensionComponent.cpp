@@ -1,5 +1,6 @@
 #include "KausUnitExtensionComponent.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
+#include "Logs/KausLogChannels.h"
 
 UKausUnitExtensionComponent::UKausUnitExtensionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -21,7 +22,7 @@ UKausUnitExtensionComponent* UKausUnitExtensionComponent::FindPawnExtensionCompo
 	return (Actor ? Actor->FindComponentByClass<UKausUnitExtensionComponent>() : nullptr);
 }
 
-void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor)
+void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComponent* InASC, AActor* InOwnerActor, FGameplayTag UnitID)
 {
 	check(InASC);
 	check(InOwnerActor);
@@ -40,6 +41,15 @@ void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComp
 
 	AbilitySystemComponent->InitAbilityActorInfo(InOwnerActor, InOwnerActor);
 
+	if (GetOwner()->HasAuthority() && IsValid(UnitAbilityData))
+	{
+		GrantedHandles.TakeFromAbilitySystem(AbilitySystemComponent);
+
+		UnitAbilityData->GiveToAbilitySystem(UnitID, AbilitySystemComponent, &GrantedHandles, GetOwner());
+
+		UE_LOG(LogKaus, Log, TEXT("[%s] Initialized Ability Data: %s"), *GetName(), *UnitAbilityData->GetName());
+	}
+
 	if (AbilitySystemComponent->IsReady())
 	{
 		OnAbilitySystemInitialized.Broadcast();
@@ -50,6 +60,11 @@ void UKausUnitExtensionComponent::UninitializeAbilitySystem()
 {
 	if (AbilitySystemComponent)
 	{
+		if (GetOwner()->HasAuthority())
+		{
+			GrantedHandles.TakeFromAbilitySystem(AbilitySystemComponent);
+		}
+
 		AbilitySystemComponent = nullptr;
 	}
 }

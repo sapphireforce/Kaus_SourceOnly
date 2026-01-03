@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/DataTable.h"
+#include "ScalableFloat.h"
 #include "GameplayTagContainer.h"
 #include "KausUnitStatsRow.generated.h"
 
@@ -13,5 +14,14 @@ public:
     FGameplayTag UnitTag;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
-    float BaseHealth = 100.0f;
+    FScalableFloat BaseHealthCurve;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+    FScalableFloat BaseStrengthCurve;
 };
+
+/*
+
+
+
+*/

@@ -16,3 +16,4 @@ UKausAbilitySystemComponent* UKausAttributeSet::GetKausAbilitySystemComponent() 
 {
 	return Cast<UKausAbilitySystemComponent>(GetOwningAbilitySystemComponent());
 }
+

@@ -60,7 +60,7 @@ void UKausUnitStatusComponent::InitializeWithAbilitySystem(UKausAbilitySystemCom
 
 	AbilitySystemComponent->AddAttributeSetSubobject(Cast<UAttributeSet>(UnitAttrSet));
 
-	ApplyUnitStatsFromData();
+	//ApplyUnitStatsFromData();
 
 	// Register to listen for attribute changes.
 	UnitAttrSet->OnHealthChanged.AddUObject(this, &ThisClass::HandleHealthChanged);
@@ -102,6 +102,7 @@ void UKausUnitStatusComponent::HandleMaxHealthChanged(AActor* DamageInstigator, 
 	OnMaxHealthChanged.Broadcast(this, OldValue, NewValue, DamageInstigator);
 }
 
+/*
 void UKausUnitStatusComponent::ApplyUnitStatsFromData()
 {
 	AKausCharacter* OwnerCharacter = Cast<AKausCharacter>(GetOwner());
@@ -127,3 +128,4 @@ void UKausUnitStatusComponent::ApplyUnitStatsFromData()
 		UnitAttrSet->InitHealth(123.0f);
 	}
 }
+*/

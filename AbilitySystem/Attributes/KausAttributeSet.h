@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AttributeSet.h"
+#include "KausAttributeRowInterface.h"
 #include "KausAttributeSet.generated.h"
 
 class AActor;
@@ -42,8 +43,8 @@ DECLARE_MULTICAST_DELEGATE_SixParams(FKausAttributeEvent, AActor* /*EffectInstig
   *
   *	Base attribute set class for the project.
   */
-UCLASS()
-class KAUS_API UKausAttributeSet : public UAttributeSet
+UCLASS(Abstract)
+class KAUS_API UKausAttributeSet : public UAttributeSet, public IKausAttributeRowInterface
 {
 	GENERATED_BODY()
 
@@ -54,4 +55,5 @@ public:
 
 	UKausAbilitySystemComponent* GetKausAbilitySystemComponent() const;
 
+	virtual void ApplyDataRowToAttribute(FGameplayTag UnitID) = 0;
 };

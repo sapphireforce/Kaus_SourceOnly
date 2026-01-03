@@ -2,6 +2,8 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include <System/KausGameData.h>
+#include "Logs/KausLogChannels.h"
 
 UKausUnitAttributeSet::UKausUnitAttributeSet()
 	: Health(100.0f)
@@ -103,6 +105,27 @@ void UKausUnitAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 		}
 	}
 	*/
+}
+
+void UKausUnitAttributeSet::ApplyDataRowToAttribute(FGameplayTag UnitID)
+{
+	const UKausGameData& GameData = UKausGameData::Get();
+	const FKausUnitStatsRow* Stats = GameData.GetUnitStats(UnitID);
+
+	if (Stats)
+	{
+		const auto BaseHealth = Stats->BaseHealthCurve.GetValueAtLevel(0);
+		InitMaxHealth(BaseHealth);
+		InitHealth(BaseHealth);
+
+		UE_LOG(LogKaus, Log, TEXT("Initialized stats for Unit [%s]: MaxHealth %.1f"), *UnitID.ToString(), BaseHealth);
+	}
+	else
+	{
+		UE_LOG(LogKaus, Warning, TEXT("Failed to find stats for UnitID [%s]"), *UnitID.ToString());
+		InitMaxHealth(100.0f);
+		InitHealth(100.0f);
+	}
 }
 
 void UKausUnitAttributeSet::ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const

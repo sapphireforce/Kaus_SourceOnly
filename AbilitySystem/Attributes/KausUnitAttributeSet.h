@@ -1,6 +1,8 @@
 #pragma once
 
 #include "AbilitySystem/Attributes/KausAttributeSet.h"
+#include "KausAttributeRowInterface.h"
+
 #include "KausUnitAttributeSet.generated.h"
 
 
@@ -40,6 +42,8 @@ protected:
 	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	virtual void ApplyDataRowToAttribute(FGameplayTag UnitID) override;
 
 private:
 	void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;

@@ -152,7 +152,7 @@ void AKausCharacter::PostInitializeComponents()
 	if (UnitExtComponent && AbilitySystemComponent)
 	{
 		UnitExtComponent->OnAbilitySystemInitialized.AddUObject(this, &ThisClass::OnAbilitySystemInitialized);
-		UnitExtComponent->InitializeAbilitySystem(AbilitySystemComponent, this);
+		UnitExtComponent->InitializeAbilitySystem(AbilitySystemComponent, this, UnitID);
 	}
 }
 
