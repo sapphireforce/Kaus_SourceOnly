@@ -43,7 +43,6 @@ void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComp
 	AbilitySystemComponent = InASC;
 	AbilitySystemComponent->InitAbilityActorInfo(InOwnerActor, InOwnerActor);
 
-
 	if (GetOwner()->HasAuthority() && IsValid(UnitAbilityData))
 	{
 		GrantedHandles.TakeFromAbilitySystem(AbilitySystemComponent);

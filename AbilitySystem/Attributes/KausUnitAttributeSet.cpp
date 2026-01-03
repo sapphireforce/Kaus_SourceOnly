@@ -115,6 +115,7 @@ void UKausUnitAttributeSet::InitAttributeData(const UDataTable* InitDataTable, c
 		return;
 	}
 
+	//todo: make row name cache like KausGameData
 	const FKausUnitStatsRow* Stats = InitDataTable->FindRow<FKausUnitStatsRow>(InitContext.UnitTag.GetTagName(), TEXT("InitAttributeData"));
 
 	if (Stats)

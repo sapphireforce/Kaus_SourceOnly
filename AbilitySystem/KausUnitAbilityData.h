@@ -5,7 +5,6 @@
 #include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 #include "GameplayAbilitySpecHandle.h"
-#include "Attributes/KausAttributeRowInterface.h"
 #include "KausUnitAbilityData.generated.h"
 
 class UAttributeSet;
@@ -13,6 +12,8 @@ class UGameplayEffect;
 class UKausAbilitySystemComponent;
 class UKausGameplayAbility;
 class UObject;
+
+struct FKausUnitInitializationContext;
 
 /**
  * FKausAbilitySet_GameplayAbility
@@ -76,7 +77,7 @@ public:
 
 	// Data table referent to initialize the attributes with, if any (can be left unset)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AssetBundles = "Client,Server"))
-	TSubclassOf<UDataTable> InitializationData;
+	TSoftObjectPtr<UDataTable> InitializationData;
 };
 
 /**
@@ -118,7 +119,7 @@ protected:
  *	Non-mutable data asset used to grant gameplay abilities and gameplay effects.
  */
 UCLASS(BlueprintType, Const)
-class KAUS_API UKausUnitAbilityData : public UPrimaryDataAsset, public IKausAttributeRowInterface
+class KAUS_API UKausUnitAbilityData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 	

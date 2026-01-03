@@ -43,7 +43,7 @@ DECLARE_MULTICAST_DELEGATE_SixParams(FKausAttributeEvent, AActor* /*EffectInstig
   *
   *	Base attribute set class for the project.
   */
-UCLASS(Abstract)
+UCLASS()
 class KAUS_API UKausAttributeSet : public UAttributeSet, public IKausAttributeRowInterface
 {
 	GENERATED_BODY()
@@ -55,5 +55,5 @@ public:
 
 	UKausAbilitySystemComponent* GetKausAbilitySystemComponent() const;
 
-	virtual void InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext) = 0;
+	virtual void InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext) {};
 };

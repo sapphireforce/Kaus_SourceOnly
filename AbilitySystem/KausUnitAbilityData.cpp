@@ -2,6 +2,7 @@
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "Logs/KausLogChannels.h"
 #include "Attributes/KausAttributeSet.h"
+#include "AbilitySystem/KausUnitInitializationContext.h"
 
 void FKausAbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {

@@ -20,6 +20,7 @@ public:
 	
 	static const UKausGameData& Get();
 
+	//todo: remove Unitstatus Logic in GameData
 	const FKausUnitStatsRow* GetUnitStats(FGameplayTag UnitTag) const;
 
 	virtual void PostLoad() override;

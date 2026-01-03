@@ -54,7 +54,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Kaus|Attribute")
 	TObjectPtr<UKausUnitAttributeSet> UnitAttrSet;
 
-	UPROPERTY(EditAnywhere, Categoy = "Kaus|Status")
+	UPROPERTY(EditAnywhere, Category = "Kaus|UnitStatus")
 	int32 UnitLevel;
 
 private:
