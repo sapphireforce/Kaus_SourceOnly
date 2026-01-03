@@ -35,6 +35,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Kaus|UnitStatus")
 	float GetMaxHealth() const;
 
+	int32 GetUnitLevel() const;
 
 protected:
 	virtual void OnUnregister() override;
@@ -53,9 +54,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Kaus|Attribute")
 	TObjectPtr<UKausUnitAttributeSet> UnitAttrSet;
 
+	UPROPERTY(EditAnywhere, Categoy = "Kaus|Status")
+	int32 UnitLevel;
+
 private:
 	/** Pointer to the ability system component that is cached for convenience. */
 	UPROPERTY()
 	TObjectPtr<UKausAbilitySystemComponent> AbilitySystemComponent;
 
+	
 };

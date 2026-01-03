@@ -65,82 +65,79 @@ UKausUnitAbilityData::UKausUnitAbilityData(const FObjectInitializer& ObjectIniti
 {
 }
 
-void UKausUnitAbilityData::GiveToAbilitySystem(FGameplayTag UnitID, UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject) const
-{
+void UKausUnitAbilityData::GiveToAbilitySystem(UKausAbilitySystemComponent* KausASC, FKausAbilitySet_GrantedHandles* OutGrantedHandles, const FKausUnitInitializationContext& InitContext) const {
 	check(KausASC);
 
-	if (!KausASC->IsOwnerActorAuthoritative())
-	{
-		// Must be authoritative to give or take ability sets.
-		return;
-	}
+    check(KausASC);
 
-	// Grant the attribute sets.
-	const int32 AttrSize = GrantedAttributes.Num();
-	for (int32 SetIndex = 0; SetIndex < AttrSize; ++SetIndex)
-	{
-		const FKausAbilitySet_AttributeSet& SetToGrant = GrantedAttributes[SetIndex];
+    if (!KausASC->IsOwnerActorAuthoritative())
+    {
+        return;
+    }
 
-		if (!IsValid(SetToGrant.AttributeSet))
-		{
-			UE_LOG(LogKausAbilitySystem, Error, TEXT("GrantedAttributes[%d] on ability set [%s] is not valid"), SetIndex, *GetNameSafe(this));
-			continue;
-		}
+    // 1. Attribute Sets 부여 및 초기화
+    for (const FKausAbilitySet_AttributeSet& SetToGrant : GrantedAttributes)
+    {
+        if (!IsValid(SetToGrant.AttributeSet)) continue;
 
-		UKausAttributeSet* NewSet = NewObject<UKausAttributeSet>(KausASC->GetOwner(), SetToGrant.AttributeSet);
-		NewSet->ApplyDataRowToAttribute(UnitID);
-		KausASC->AddAttributeSetSubobject(NewSet);
+        // A. AttributeSet 객체 생성
+        UAttributeSet* NewSet = NewObject<UAttributeSet>(KausASC->GetOwner(), SetToGrant.AttributeSet);
+        KausASC->AddAttributeSetSubobject(NewSet);
 
-		if (OutGrantedHandles)
-		{
-			OutGrantedHandles->AddAttributeSet(NewSet);
-		}
-	}
+        // B. 초기화 위임 (Dependency Injection)
+        // AttributeSet이 인터페이스를 구현하고 있다면, 데이터 에셋에 설정된 테이블을 넘겨줍니다.
+        if (IKausAttributeRowInterface* InterfaceSet = Cast<IKausAttributeRowInterface>(NewSet))
+        {
+            if (!SetToGrant.InitializationData.IsNull())
+            {
+                // 여기서 테이블을 로드하여 주입합니다.
+                const UDataTable* InitTable = SetToGrant.InitializationData.LoadSynchronous();
+                InterfaceSet->InitAttributeData(InitTable, InitContext);
+            }
+        }
 
-	// Grant the gameplay abilities.
-	const int32 AbilitySize = GrantedGameplayAbilities.Num();
-	for (int32 AbilityIndex = 0; AbilityIndex < AbilitySize; ++AbilityIndex)
-	{
-		const FKausAbilitySet_GameplayAbility& AbilityToGrant = GrantedGameplayAbilities[AbilityIndex];
+        if (OutGrantedHandles)
+        {
+            OutGrantedHandles->AddAttributeSet(NewSet);
+        }
+    }
 
-		if (!IsValid(AbilityToGrant.Ability))
-		{
-			UE_LOG(LogKausAbilitySystem, Error, TEXT("GrantedGameplayAbilities[%d] on ability set [%s] is not valid."), AbilityIndex, *GetNameSafe(this));
-			continue;
-		}
+    // 2. Gameplay Abilities 부여 (Context의 Level 활용)
+    for (const FKausAbilitySet_GameplayAbility& AbilityToGrant : GrantedGameplayAbilities)
+    {
+        if (!IsValid(AbilityToGrant.Ability)) continue;
 
-		UKausGameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UKausGameplayAbility>();
+        UKausGameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UKausGameplayAbility>();
 
-		FGameplayAbilitySpec AbilitySpec(AbilityCDO, AbilityToGrant.AbilityLevel);
-		AbilitySpec.SourceObject = SourceObject;
-		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilityToGrant.InputTag);
+        // 데이터 에셋의 레벨이 0보다 크면 고정값, 아니면 유닛 레벨을 따름
+        float AbilityLevel = (AbilityToGrant.AbilityLevel > 0) ? (float)AbilityToGrant.AbilityLevel : InitContext.Level;
 
-		const FGameplayAbilitySpecHandle AbilitySpecHandle = KausASC->GiveAbility(AbilitySpec);
+        FGameplayAbilitySpec AbilitySpec(AbilityCDO, AbilityLevel);
+        AbilitySpec.SourceObject = InitContext.AvatarActor;
+        AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilityToGrant.InputTag);
 
-		if (OutGrantedHandles)
-		{
-			OutGrantedHandles->AddAbilitySpecHandle(AbilitySpecHandle);
-		}
-	}
+        const FGameplayAbilitySpecHandle Handle = KausASC->GiveAbility(AbilitySpec);
 
-	// Grant the gameplay effects.
-	const int32 EffectSize = GrantedGameplayEffects.Num();
-	for (int32 EffectIndex = 0; EffectIndex < EffectSize; ++EffectIndex)
-	{
-		const FKausAbilitySet_GameplayEffect& EffectToGrant = GrantedGameplayEffects[EffectIndex];
+        if (OutGrantedHandles)
+        {
+            OutGrantedHandles->AddAbilitySpecHandle(Handle);
+        }
+    }
 
-		if (!IsValid(EffectToGrant.GameplayEffect))
-		{
-			UE_LOG(LogKausAbilitySystem, Error, TEXT("GrantedGameplayEffects[%d] on ability set [%s] is not valid"), EffectIndex, *GetNameSafe(this));
-			continue;
-		}
+    // 3. Gameplay Effects 부여 (Context의 Level 활용)
+    for (const FKausAbilitySet_GameplayEffect& EffectToGrant : GrantedGameplayEffects)
+    {
+        if (!IsValid(EffectToGrant.GameplayEffect)) continue;
 
-		const UGameplayEffect* GameplayEffect = EffectToGrant.GameplayEffect->GetDefaultObject<UGameplayEffect>();
-		const FActiveGameplayEffectHandle GameplayEffectHandle = KausASC->ApplyGameplayEffectToSelf(GameplayEffect, EffectToGrant.EffectLevel, KausASC->MakeEffectContext());
+        const UGameplayEffect* GameplayEffect = EffectToGrant.GameplayEffect->GetDefaultObject<UGameplayEffect>();
 
-		if (OutGrantedHandles)
-		{
-			OutGrantedHandles->AddGameplayEffectHandle(GameplayEffectHandle);
-		}
-	}
+        float EffectLevel = (EffectToGrant.EffectLevel > 0.0f) ? EffectToGrant.EffectLevel : InitContext.Level;
+
+        const FActiveGameplayEffectHandle Handle = KausASC->ApplyGameplayEffectToSelf(GameplayEffect, EffectLevel, KausASC->MakeEffectContext());
+
+        if (OutGrantedHandles)
+        {
+            OutGrantedHandles->AddGameplayEffectHandle(Handle);
+        }
+    }
 }

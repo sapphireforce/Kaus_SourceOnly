@@ -5,9 +5,8 @@
 #include "GameplayTagContainer.h"
 #include "KausAttributeRowInterface.generated.h"
 
-struct FKausUnitStatsRow;
-
-class UAttributeSet;
+class UDataTable;
+struct FKausUnitInitializationContext;
 
 UINTERFACE(MinimalAPI)
 class UKausAttributeRowInterface : public UInterface
@@ -21,6 +20,6 @@ class KAUS_API IKausAttributeRowInterface
 	GENERATED_BODY()
 
 public:
-	virtual void ApplyDataRowToAttribute(FGameplayTag UnitID) = 0;
+	virtual void InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext) = 0;
 	
 };

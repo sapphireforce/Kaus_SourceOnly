@@ -2,8 +2,9 @@
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
-#include <System/KausGameData.h>
 #include "Logs/KausLogChannels.h"
+#include "DataTable/KausUnitStatsRow.h"
+#include "AbilitySystem/KausUnitInitializationContext.h"
 
 UKausUnitAttributeSet::UKausUnitAttributeSet()
 	: Health(100.0f)
@@ -107,24 +108,31 @@ void UKausUnitAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 	*/
 }
 
-void UKausUnitAttributeSet::ApplyDataRowToAttribute(FGameplayTag UnitID)
+void UKausUnitAttributeSet::InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext)
 {
-	const UKausGameData& GameData = UKausGameData::Get();
-	const FKausUnitStatsRow* Stats = GameData.GetUnitStats(UnitID);
+	if (!InitDataTable || !InitContext.UnitTag.IsValid())
+	{
+		return;
+	}
+
+	const FKausUnitStatsRow* Stats = InitDataTable->FindRow<FKausUnitStatsRow>(InitContext.UnitTag.GetTagName(), TEXT("InitAttributeData"));
 
 	if (Stats)
 	{
-		const auto BaseHealth = Stats->BaseHealthCurve.GetValueAtLevel(0);
-		InitMaxHealth(BaseHealth);
-		InitHealth(BaseHealth);
+		const float NewMaxHealth = Stats->BaseHealthCurve.GetValueAtLevel(InitContext.Level);
 
-		UE_LOG(LogKaus, Log, TEXT("Initialized stats for Unit [%s]: MaxHealth %.1f"), *UnitID.ToString(), BaseHealth);
+		InitMaxHealth(NewMaxHealth);
+		InitHealth(NewMaxHealth);
+
+		UE_LOG(LogKaus, Log, TEXT("Unit [%s] Attributes Initialized. Level: %.1f, MaxHealth: %.1f"),
+			*InitContext.UnitTag.ToString(), InitContext.Level, NewMaxHealth);
 	}
 	else
 	{
-		UE_LOG(LogKaus, Warning, TEXT("Failed to find stats for UnitID [%s]"), *UnitID.ToString());
-		InitMaxHealth(100.0f);
-		InitHealth(100.0f);
+		UE_LOG(LogKaus, Warning, TEXT("Failed to find row for Unit [%s] in provided table."), *InitContext.UnitTag.ToString());
+
+		InitMaxHealth(123456789.0f);
+		InitHealth(123456789.0f);
 	}
 }
 

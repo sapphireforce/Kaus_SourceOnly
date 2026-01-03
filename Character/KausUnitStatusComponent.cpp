@@ -92,6 +92,11 @@ float UKausUnitStatusComponent::GetMaxHealth() const
 	return (UnitAttrSet ? UnitAttrSet->GetMaxHealth() : 0.0f);
 }
 
+int32 UKausUnitStatusComponent::GetUnitLevel() const
+{
+	return UnitLevel;
+}
+
 void UKausUnitStatusComponent::HandleHealthChanged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec* DamageEffectSpec, float DamageMagnitude, float OldValue, float NewValue)
 {
 	OnHealthChanged.Broadcast(this, OldValue, NewValue, DamageInstigator);

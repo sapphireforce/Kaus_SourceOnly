@@ -43,7 +43,7 @@ protected:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-	virtual void ApplyDataRowToAttribute(FGameplayTag UnitID) override;
+	virtual void InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext) override;
 
 private:
 	void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;

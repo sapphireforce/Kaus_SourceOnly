@@ -1,6 +1,9 @@
 #include "KausUnitExtensionComponent.h"
 #include "AbilitySystem/KausAbilitySystemComponent.h"
 #include "Logs/KausLogChannels.h"
+#include "KausCharacter.h"
+#include "AbilitySystem/KausUnitInitializationContext.h"
+
 
 UKausUnitExtensionComponent::UKausUnitExtensionComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -38,16 +41,26 @@ void UKausUnitExtensionComponent::InitializeAbilitySystem(UKausAbilitySystemComp
 	}
 
 	AbilitySystemComponent = InASC;
-
 	AbilitySystemComponent->InitAbilityActorInfo(InOwnerActor, InOwnerActor);
+
 
 	if (GetOwner()->HasAuthority() && IsValid(UnitAbilityData))
 	{
 		GrantedHandles.TakeFromAbilitySystem(AbilitySystemComponent);
 
-		UnitAbilityData->GiveToAbilitySystem(UnitID, AbilitySystemComponent, &GrantedHandles, GetOwner());
+		FGameplayTag UnitID = FGameplayTag::EmptyTag;
+		float UnitLevel = 1.0f;
 
-		UE_LOG(LogKaus, Log, TEXT("[%s] Initialized Ability Data: %s"), *GetName(), *UnitAbilityData->GetName());
+		if (AKausCharacter* KausChar = Cast<AKausCharacter>(InOwnerActor))
+		{
+			UnitID = KausChar->UnitID;
+		}
+
+		FKausUnitInitializationContext InitContext(UnitID, UnitLevel, InOwnerActor);
+
+		UnitAbilityData->GiveToAbilitySystem(AbilitySystemComponent, &GrantedHandles, InitContext);
+
+		UE_LOG(LogKaus, Log, TEXT("[%s] Ability System Initialized via Data Asset."), *GetName());
 	}
 
 	if (AbilitySystemComponent->IsReady())

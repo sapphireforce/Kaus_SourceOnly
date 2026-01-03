@@ -55,5 +55,5 @@ public:
 
 	UKausAbilitySystemComponent* GetKausAbilitySystemComponent() const;
 
-	virtual void ApplyDataRowToAttribute(FGameplayTag UnitID) = 0;
+	virtual void InitAttributeData(const UDataTable* InitDataTable, const FKausUnitInitializationContext& InitContext) = 0;
 };
